@@ -14,6 +14,57 @@ import {
 import React, { Component } from 'react';
 import { Linking, Text } from 'react-native';
 
+const SettingsNavigation = StackNavigator(
+  {
+    settings: { screen: () => <Text>Settings Screen</Text> },
+    settings2: { screen: () => <Text>Settings 2 Screen</Text> }
+  }
+)
+
+const HomeNavigation = StackNavigator(
+  {
+    home: { screen: () => <Text>Home Screen</Text> },
+    home2: { screen: () => <Text>Home 2 Screen</Text> }
+  }
+)
+
+const AppNavigation = TabNavigator(
+  {
+    homeTab: { screen: HomeNavigation },
+    rewardsTab: { screen: () => <Text>Rewards screen</Text> },
+    settingsTab: { screen: SettingsNavigation },
+  }
+);
+
+const OnboardingNavigation = StackNavigator(
+  {
+    waitingList: { screen: () => <Text>Waitinglist</Text> },
+    onboarding1: { screen: () => <Text>Onboarding 1</Text> },
+    onboarding2: { screen: () => <Text>Onboarding 2</Text> },
+    onboarding3: { screen: () => <Text>Onboarding 3</Text> },
+  }
+);
+
+const RegisterNavigation = StackNavigator(
+  {
+    welcome: { screen: () => <Text>Welcome</Text> },
+    signup: { screen: () => <Text>Signup</Text> },
+    login: { screen: () => <Text>Login</Text> }
+  }
+);
+
+const RootNavigation = TabRouter(
+  {
+    booting: { screen: () => <Text>Booting</Text>, path: 'booting' },
+    register: { screen: RegisterNavigation, path: 'unauth' },
+    onboarding: { screen: OnboardingNavigation },
+    app: { screen: AppNavigation },
+  },
+  {
+    initialRouteName: 'booting'
+  }
+)
+
 
 class AppNavigator extends Component {
   constructor(props, context) {
@@ -21,15 +72,7 @@ class AppNavigator extends Component {
     this.handleUrl = this.handleUrl.bind(this);
   }
 
-  static router = TabRouter(
-    {
-      auth: { screen: () => <Text>Hey this is the auth tab</Text>, path: 'auth' },
-      unauth: { screen: () => <Text>Hey this is the unauth tab</Text>, path: 'unauth' }
-    },
-    {
-      initialRouteName: 'auth'
-    }
-  );
+  static router = RootNavigation
 
   handleUrl(url) {
     const
