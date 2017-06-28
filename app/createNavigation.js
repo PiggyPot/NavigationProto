@@ -13,6 +13,13 @@ import {
 } from 'react-navigation';
 import React, { Component } from 'react';
 import { Linking, Text } from 'react-native';
+import { scheduleRedirect, resetRedirect, appBoot } from './actions';
+import {
+  Welcome,
+  Booting,
+  Signup,
+  Login
+} from './Scenes';
 
 const SettingsNavigation = StackNavigator(
   {
@@ -47,21 +54,21 @@ const OnboardingNavigation = StackNavigator(
 
 const RegisterNavigation = StackNavigator(
   {
-    welcome: { screen: () => <Text>Welcome</Text> },
-    signup: { screen: () => <Text>Signup</Text> },
-    login: { screen: () => <Text>Login</Text> }
+    welcome: { screen: Welcome, navigationOptions: { header: null }},
+    signup: { screen: Signup },
+    login: { screen: Login }
   }
 );
 
 const RootNavigation = TabRouter(
   {
-    booting: { screen: () => <Text>Booting</Text>, path: 'booting' },
-    register: { screen: RegisterNavigation, path: 'unauth' },
-    onboarding: { screen: OnboardingNavigation },
+    booting: { screen: Booting, path: 'booting'},
+    register: { screen: RegisterNavigation, path: 'register'  },
+    onboarding: { screen: OnboardingNavigation  },
     app: { screen: AppNavigation },
   },
   {
-    initialRouteName: 'booting'
+    initialRouteName: 'booting',
   }
 )
 
@@ -75,6 +82,7 @@ class AppNavigator extends Component {
   static router = RootNavigation
 
   handleUrl(url) {
+    console.log('handle url')
     const
       { navigation } = this.props,
       { dispatch } = navigation,
@@ -92,6 +100,9 @@ class AppNavigator extends Component {
   }
 
   componentDidMount() {
+    console.log('component mounted');
+    // this.props.navigation.dispatch(appBoot())
+
     Linking.addEventListener('url', ({ url }) => {
       this.handleUrl(url);
     });
@@ -114,8 +125,8 @@ class AppNavigator extends Component {
       <TabView
         navigation={this.props.navigation}
         router={AppNavigator.router}
-        tabBarComponent={TabBarBottom}
-        tabBarPosition="bottom"
+        lazy
+        animationEnabled={false}
       />
     );
   }

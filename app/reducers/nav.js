@@ -2,7 +2,7 @@ import AppNavigator from '../createNavigation';
 
 // const initialState = AppNavigator.router.getStateForAction((function() {
 //   console.log(AppNavigator.router.getActionForPathAndParams('Test1'))
-//   return AppNavigator.router.getActionForPathAndParams('Test1')
+//   return AppNavigator.router.getActionForPathAndParams('booting')
 // }())
 // );
 
